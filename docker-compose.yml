@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  nullspace-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./nullspace.db
+      - AI_PROVIDER=local_fallback
+      - CURRENT_REFERENCE_YEAR=2026
+    volumes:
+      - nullspace-data:/app
+
+  nullspace-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - nullspace-backend
+
+volumes:
+  nullspace-data:
+
